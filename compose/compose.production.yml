@@ -1,0 +1,3 @@
+# Production overrides for Docker Compose (override file)
+services:
+  # Define production-specific overrides here (e.g., resource limits, replicas)

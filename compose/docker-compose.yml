@@ -1,0 +1,143 @@
+services:
+  # Core media services (jellyfin, sonarr, radarr, lidarr, readarr, prowlarr, qbittorrent, overseerr)
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - lidarr_config:/config
+      - ${DATA_ROOT}/media/music:/music
+    networks:
+      - media_network
+    restart: unless-stopped
+
+  readarr:
+    image: lscr.io/linuxserver/readarr:latest
+    container_name: readarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - readarr_config:/config
+      - ${DATA_ROOT}/media/books:/books
+      - ${DATA_ROOT}/media/audiobooks:/audiobooks
+    networks:
+      - media_network
+    restart: unless-stopped
+
+  # Subtitles and requests
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - bazarr_config:/config
+      - ${DATA_ROOT}/media:/media
+    networks:
+      - media_network
+    restart: unless-stopped
+
+  # Media management for comics
+  mylar:
+    image: linuxserver/mylar3:latest
+    container_name: mylar
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - mylar_config:/config
+      - ${DATA_ROOT}/media/comics:/comics
+    networks:
+      - media_network
+    restart: unless-stopped
+
+  # Podcast downloader
+  podgrab:
+    image: ghcr.io/podgrab/podgrab:latest
+    container_name: podgrab
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - podgrab_data:/data
+    networks:
+      - media_network
+    restart: unless-stopped
+
+  # Photo management
+  photoprism:
+    image: photoprism/photoprism:latest
+    container_name: photoprism
+    environment:
+      - PHOTOPRISM_ADMIN_PASSWORD_FILE=${PHOTOPRISM_ADMIN_PASSWORD_FILE}
+      - TZ=${TZ}
+    volumes:
+      - photoprism_storage:/photoprism/storage
+      - ${DATA_ROOT}/media/photos:/photoprism/originals
+    networks:
+      - media_network
+    restart: unless-stopped
+
+  # Usage analytics and monitoring for Jellyfin
+  tautulli:
+    image: lscr.io/linuxserver/tautulli:latest
+    container_name: tautulli
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - tautulli_config:/config
+    networks:
+      - media_network
+    restart: unless-stopped
+
+  # Online video downloader and manager
+  youtube-dl-material:
+    image: ${YTDL_MATERIAL_IMAGE}
+    container_name: youtube-dl-material
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    volumes:
+      - youtube_dl_config:/config
+      - ${DATA_ROOT}/media/online-videos:/data
+    ports:
+      - "17442:17442"
+    networks:
+      - media_network
+    restart: unless-stopped
+
+networks:
+  traefik_network:
+    external: true
+  media_network:
+    driver: bridge
+  download_network:
+    driver: bridge
+    internal: true
+  monitoring_network:
+    driver: bridge
+
+volumes:
+  jellyfin_config:
+  lidarr_config:
+  readarr_config:
+  bazarr_config:
+  mylar_config:
+  podgrab_data:
+  photoprism_storage:
+  tautulli_config:
+  traefik_data:
+  prometheus_data:
+  youtube_dl_config:
