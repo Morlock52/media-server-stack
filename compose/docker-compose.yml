@@ -118,6 +118,22 @@ services:
       - media_network
     restart: unless-stopped
 
+  # Minimal web interface for stack control
+  webui:
+    build:
+      context: ../webui
+    container_name: media-webui
+    environment:
+      - STACK_DIR=/stack
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ../:/stack:ro
+    ports:
+      - "3000:3000"
+    networks:
+      - media_network
+    restart: unless-stopped
+
 networks:
   traefik_network:
     external: true

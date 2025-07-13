@@ -25,6 +25,7 @@ This project provides a production-ready, Docker Compose-based media server stac
 # directly (deploy.sh already symlinks compose/docker-compose.yml and compose/compose.production.yml).
 
 3. Access the YouTubeDL-Material web UI at <http://localhost:${YTDL_MATERIAL_PORT:-17442}> to configure online video downloads.
+4. After deployment, open the new Web UI at <http://localhost:3000> to monitor and manage the stack with start/stop controls and service status output.
 
  ## Directory Structure
 
@@ -42,6 +43,7 @@ This project provides a production-ready, Docker Compose-based media server stac
  ```
 
 For full documentation, see `PLAN.md` and `SECURITY.md`.
+The Web UI is documented separately in `docs/WEBUI.md`.
 
 ## Interactive Environment Setup
 

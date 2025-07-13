@@ -1,0 +1,10 @@
+# Ignore environment files
+.env
+
+# Ignore Docker artifacts
+*.log
+*.tmp
+
+# Ignore node dependencies and build outputs
+webui/node_modules/
+webui/dist/
