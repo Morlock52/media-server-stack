@@ -44,6 +44,8 @@ This project provides a production-ready, Docker Compose-based media server stac
 
 For full documentation, see `PLAN.md` and `SECURITY.md`.
 The Web UI is documented separately in `docs/WEBUI.md`.
+Additional upgrade details can be found in `docs/Media_Server_2025_Upgrade_Guide.md`.
+Compose files for Google Drive are located under `gdrive/media`.
 
 ## Interactive Environment Setup
 

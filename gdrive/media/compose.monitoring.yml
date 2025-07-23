@@ -1,0 +1,3 @@
+# Monitoring stack configuration for Docker Compose
+services:
+  # Define Prometheus, Grafana, and related services here
